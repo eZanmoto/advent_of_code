@@ -54,14 +54,14 @@ fn graph_from_pairs<T: Eq + hash::Hash>(pairs: Vec<(T, T)>) -> Graph<T> {
     g
 }
 
-fn count_leaf_depths(g: &Graph<&str>, origin: &str) -> i32 {
-    fn count (g: &Graph<&str>, origin: &str, depth: i32) -> i32 {
+fn count_leaf_depths<T: Eq + hash::Hash>(g: &Graph<T>, origin: &T) -> i32 {
+    fn count<T: Eq + hash::Hash>(g: &Graph<T>, origin: &T, depth: i32) -> i32 {
         match g.get(origin) {
             None => depth,
             Some(nbrs) => {
                 let nbr_depths: i32 = nbrs
                     .iter()
-                    .map(|nbr: &&str| count(g, nbr, depth + 1))
+                    .map(|nbr| count(g, nbr, depth + 1))
                     .sum();
 
                 depth + nbr_depths

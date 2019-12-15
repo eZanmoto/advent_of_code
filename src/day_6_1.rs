@@ -34,7 +34,7 @@ fn num_orbits(links: &[&str]) -> i32 {
             }
             nodes
         })
-        .map(|nodes: Vec<&str>| (nodes[0], nodes[1]))
+        .map(|nodes| (nodes[0], nodes[1]))
         .collect();
 
     let g = graph_from_pairs(pairs);

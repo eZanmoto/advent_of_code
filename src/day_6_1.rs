@@ -44,7 +44,7 @@ fn num_orbits(links: &[&str]) -> i32 {
 
 type Graph<T> = collections::HashMap<T, Vec<T>>;
 
-// TODO impl<T> From<Vec<(T, T)>> for Graph<T> {
+// TODO Implement From<Vec<(T, T)>> for Graph<T>.
 fn graph_from_pairs<T: Eq + hash::Hash>(pairs: Vec<(T, T)>) -> Graph<T> {
     let mut g: Graph<T> = collections::HashMap::new();
     for (k, v) in pairs {

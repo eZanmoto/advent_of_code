@@ -6,6 +6,10 @@ use std::io::prelude::*;
 use day_3_1;
 
 pub fn run() -> Result<i32, day_3_1::Error> {
+    run_on_input(num_orbits)
+}
+
+pub fn run_on_input<T>(f: fn(&[&str]) -> T) -> Result<T, day_3_1::Error> {
     let mut file = fs::File::open("inputs/day_6_1.txt")?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
@@ -20,10 +24,16 @@ pub fn run() -> Result<i32, day_3_1::Error> {
     // We remove the final, empty, line.
     links.pop();
 
-    Ok(num_orbits(links.as_slice()))
+    Ok(f(links.as_slice()))
 }
 
 fn num_orbits(links: &[&str]) -> i32 {
+    let g = graph_from_links(links);
+
+    count_leaf_depths(&g, &"COM")
+}
+
+pub fn graph_from_links<'a>(links: &[&'a str]) -> Graph<&'a str> {
     let pairs = links
         .iter()
         .enumerate()
@@ -37,12 +47,10 @@ fn num_orbits(links: &[&str]) -> i32 {
         .map(|nodes| (nodes[0], nodes[1]))
         .collect();
 
-    let g = graph_from_pairs(pairs);
-
-    count_leaf_depths(&g, &"COM")
+    graph_from_pairs(pairs)
 }
 
-type Graph<T> = collections::HashMap<T, Vec<T>>;
+pub type Graph<T> = collections::HashMap<T, Vec<T>>;
 
 // TODO Implement From<Vec<(T, T)>> for Graph<T>.
 fn graph_from_pairs<T: Eq + hash::Hash>(pairs: Vec<(T, T)>) -> Graph<T> {
